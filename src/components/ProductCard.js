@@ -61,7 +61,7 @@ const buttonVariants = {
   hover: { scale: 1.05, transition: { duration: 0.3, ease: "easeInOut" } },
 };
 
-const ProductCard = ({ product }) => {
+const ProductCard = React.memo(({ product }) => {
   const handleBuy = (e) => {
     e.preventDefault();
     const message = `Hola, quiero comprar ${
@@ -92,6 +92,6 @@ const ProductCard = ({ product }) => {
       </BuyButton>
     </CardWrapper>
   );
-};
+});
 
 export default ProductCard;

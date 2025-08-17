@@ -4,25 +4,33 @@ import { products } from "../data/products";
 import ProductCard from "../components/ProductCard";
 import { motion } from "framer-motion"; // Nueva importación
 
-const ShopWrapper = styled.div`
-  padding: 40px 20px;
-  background-color: ${(props) => props.theme.colors.lightGray};
-`;
-
 const Grid = styled(motion.div)`
-  // Convertido a motion.div
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 30px;
+  gap: 40px; // Espacio amplio para lujo
   max-width: 1200px;
   margin: 0 auto;
 
   @media (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 600px) {
     grid-template-columns: 1fr;
+    gap: 20px;
+  }
+`;
+
+const ShopWrapper = styled.div`
+  padding: 60px 40px; // Amplio en desktop
+
+  @media (max-width: 1024px) {
+    padding: 40px 30px;
+  }
+
+  @media (max-width: 600px) {
+    padding: 30px 20px;
   }
 `;
 

@@ -1,12 +1,12 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
-import styled from 'styled-components';
-import { FaShoppingCart } from 'react-icons/fa'; // Icono de carrito
+import React from "react";
+import { NavLink } from "react-router-dom";
+import styled from "styled-components";
+import { FaShoppingCart } from "react-icons/fa"; // Icono de carrito
 
 const HeaderWrapper = styled.header`
-  background-color: ${props => props.theme.colors.black};
-  color: ${props => props.theme.colors.white};
-  padding: 15px 20px;
+  background-color: ${(props) => props.theme.colors.black};
+  color: ${(props) => props.theme.colors.white};
+  padding: 20px 40px; // Más espacio en desktop
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -14,23 +14,34 @@ const HeaderWrapper = styled.header`
   top: 0;
   z-index: 1000;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
+    padding: 15px 30px;
+  }
+
+  @media (max-width: 600px) {
     flex-direction: column;
-    padding: 10px;
+    padding: 10px 20px;
   }
 `;
 
 const Logo = styled(NavLink)`
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
+  font-family: "Playfair Display", serif;
+  font-size: 32px; // Mayor para lujo
   font-weight: 700;
-  color: ${props => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.white};
   text-decoration: none;
 
-  @media (max-width: 768px) {
+  @media (max-width: 1024px) {
+    font-size: 28px;
+  }
+
+  @media (max-width: 600px) {
+    font-size: 24px;
     margin-bottom: 10px;
   }
 `;
+
+// Similar para NavItem, CartIcon: reduce font-size en mobile a 14px, etc.
 
 const NavMenu = styled.nav`
   display: flex;
@@ -44,28 +55,28 @@ const NavMenu = styled.nav`
 `;
 
 const NavItem = styled(NavLink)`
-  color: ${props => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.white};
   text-decoration: none;
   font-size: 16px;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   transition: color 0.3s;
 
   &.active {
-    color: ${props => props.theme.colors.mediumGray};
+    color: ${(props) => props.theme.colors.mediumGray};
   }
 
   &:hover {
-    color: ${props => props.theme.colors.lightGray};
+    color: ${(props) => props.theme.colors.lightGray};
   }
 `;
 
 const CartIcon = styled(FaShoppingCart)`
-  color: ${props => props.theme.colors.white};
+  color: ${(props) => props.theme.colors.white};
   font-size: 24px;
   cursor: pointer;
 
   &:hover {
-    color: ${props => props.theme.colors.lightGray};
+    color: ${(props) => props.theme.colors.lightGray};
   }
 
   @media (max-width: 768px) {
@@ -78,7 +89,9 @@ const Header = () => {
     <HeaderWrapper>
       <Logo to="/">Lámparas Elite</Logo>
       <NavMenu>
-        <NavItem to="/" end>Home</NavItem>
+        <NavItem to="/" end>
+          Home
+        </NavItem>
         <NavItem to="/shop">Shop</NavItem>
         <NavItem to="/contact">Contacto</NavItem>
       </NavMenu>

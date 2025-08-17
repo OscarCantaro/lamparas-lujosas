@@ -5,23 +5,30 @@ import { products } from "../data/products";
 import { motion } from "framer-motion"; // Nueva importación
 
 const DetailWrapper = styled(motion.div)`
-  // Convertido a motion.div
-  padding: 40px 20px;
-  background-color: ${(props) => props.theme.colors.white};
-  max-width: 800px;
+  padding: 60px 40px;
+  max-width: 900px; // Mayor para desktop
   margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border: 1px solid ${(props) => props.theme.colors.lightGray};
+  ... @media (max-width: 1024px) {
+    padding: 40px 30px;
+    max-width: 700px;
+  }
+
+  @media (max-width: 600px) {
+    padding: 30px 20px;
+    max-width: 100%;
+  }
 `;
 
 const ProductImage = styled(motion.img)`
-  // Convertido a motion.img
-  width: 100%;
-  max-height: 400px;
-  object-fit: cover;
-  margin-bottom: 20px;
+  max-height: 500px; // Mayor en desktop
+
+  @media (max-width: 1024px) {
+    max-height: 400px;
+  }
+
+  @media (max-width: 600px) {
+    max-height: 300px;
+  }
 `;
 
 const ProductName = styled(motion.h1)`
