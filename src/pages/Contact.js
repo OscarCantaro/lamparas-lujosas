@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { motion } from "framer-motion";
 
 const ContactWrapper = styled(motion.div)`
-  padding: 60px 40px;
+  padding: 40px 40px;
   background-color: ${(props) => props.theme.colors.lightGray};
   max-width: 800px;
   margin: 0 auto;
@@ -20,7 +20,7 @@ const ContactWrapper = styled(motion.div)`
 
 const ContactTitle = styled.h1`
   font-family: "Playfair Display", serif;
-  font-size: 36px;
+  font-size: 30px;
   color: ${(props) => props.theme.colors.black};
   margin-bottom: 40px;
 
@@ -38,20 +38,19 @@ const Form = styled.form`
 `;
 
 const Input = styled.input`
-  padding: 15px;
+  padding: 10px;
   border: 1px solid ${(props) => props.theme.colors.mediumGray};
   background-color: ${(props) => props.theme.colors.white};
   font-family: "Roboto", sans-serif;
   font-size: 16px;
   color: ${(props) => props.theme.colors.black};
-
   &::placeholder {
     color: ${(props) => props.theme.colors.mediumGray};
   }
 `;
 
 const TextArea = styled.textarea`
-  padding: 15px;
+  padding: 10px;
   border: 1px solid ${(props) => props.theme.colors.mediumGray};
   background-color: ${(props) => props.theme.colors.white};
   font-family: "Roboto", sans-serif;
@@ -59,7 +58,6 @@ const TextArea = styled.textarea`
   color: ${(props) => props.theme.colors.black};
   height: 150px;
   resize: none;
-
   &::placeholder {
     color: ${(props) => props.theme.colors.mediumGray};
   }
@@ -69,7 +67,7 @@ const SubmitButton = styled(motion.button)`
   background-color: ${(props) => props.theme.colors.black};
   color: ${(props) => props.theme.colors.white};
   border: none;
-  padding: 15px 30px;
+  padding: 10px 30px;
   font-family: "Roboto", sans-serif;
   font-size: 18px;
   cursor: pointer;
@@ -93,7 +91,7 @@ const Contact = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const fullMessage = `Hola, soy ${name} (${email}). Mensaje: ${message}`;
-    const whatsappNumber = "+123456789"; // Placeholder
+    const whatsappNumber = "+51924680502"; // Placeholder
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       fullMessage
     )}`;

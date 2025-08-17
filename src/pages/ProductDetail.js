@@ -26,7 +26,7 @@ const DetailWrapper = styled(motion.div)`
 `;
 
 const ProductImage = styled(motion.img)`
-  width: 100%;
+  width: 500px;
   max-height: 500px;
   object-fit: cover;
   margin-bottom: 20px;
@@ -99,7 +99,7 @@ const buttonVariants = {
 const ProductDetail = () => {
   const { id } = useParams();
   const { products } = useContext(ProductsContext);
-  const product = products.find((p) => p.id === parseInt(id));
+  const product = products.find((p) => p.id === id); // ID es string en Firestore
 
   if (!product) {
     return <p>Producto no encontrado.</p>;
@@ -131,6 +131,7 @@ const ProductDetail = () => {
         viewport={{ once: true }}
         variants={imageVariants}
       />
+
       <ProductName
         initial="hidden"
         whileInView="visible"
@@ -139,6 +140,7 @@ const ProductDetail = () => {
       >
         {product.name}
       </ProductName>
+
       <ProductDescription
         initial="hidden"
         whileInView="visible"
@@ -147,6 +149,7 @@ const ProductDetail = () => {
       >
         {product.description}
       </ProductDescription>
+
       <ProductPrice
         initial="hidden"
         whileInView="visible"
@@ -155,6 +158,7 @@ const ProductDetail = () => {
       >
         ${product.price.toFixed(2)}
       </ProductPrice>
+
       <BuyButton
         onClick={handleBuy}
         whileHover="hover"

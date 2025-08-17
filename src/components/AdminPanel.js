@@ -20,10 +20,10 @@ const AdminWrapper = styled.div`
 
 const Title = styled.h1`
   font-family: "Playfair Display", serif;
-  font-size: 36px;
+  font-size: 30px;
   color: ${(props) => props.theme.colors.black};
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
   @media (max-width: 600px) {
     font-size: 28px;
@@ -39,7 +39,7 @@ const Form = styled.form`
 `;
 
 const Input = styled.input`
-  padding: 15px;
+  padding: 10px;
   border: 1px solid ${(props) => props.theme.colors.mediumGray};
   background-color: ${(props) => props.theme.colors.white};
   font-family: "Roboto", sans-serif;
@@ -52,7 +52,7 @@ const Input = styled.input`
 `;
 
 const TextArea = styled.textarea`
-  padding: 15px;
+  padding: 10px;
   border: 1px solid ${(props) => props.theme.colors.mediumGray};
   background-color: ${(props) => props.theme.colors.white};
   font-family: "Roboto", sans-serif;
@@ -63,7 +63,7 @@ const TextArea = styled.textarea`
 `;
 
 const Select = styled.select`
-  padding: 15px;
+  padding: 10px;
   border: 1px solid ${(props) => props.theme.colors.mediumGray};
   background-color: ${(props) => props.theme.colors.white};
   font-family: "Roboto", sans-serif;
@@ -181,15 +181,15 @@ const AdminPanel = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validateForm()) return;
 
     if (editingProduct) {
-      updateProduct({ ...formData, id: editingProduct.id });
+      await updateProduct({ ...formData, id: editingProduct.id });
       setEditingProduct(null);
     } else {
-      addProduct(formData);
+      await addProduct(formData);
     }
     setFormData({
       name: "",
@@ -206,8 +206,8 @@ const AdminPanel = () => {
     setFormData(product);
   };
 
-  const handleDeleteConfirm = () => {
-    deleteProduct(showDeleteModal);
+  const handleDeleteConfirm = async () => {
+    await deleteProduct(showDeleteModal);
     setShowDeleteModal(null);
   };
 
@@ -240,9 +240,7 @@ const AdminPanel = () => {
           type="number"
           placeholder="Precio"
           value={formData.price}
-          onChange={(e) =>
-            setFormData({ ...formData, price: parseFloat(e.target.value) })
-          }
+          onChange={(e) => setFormData({ ...formData, price: e.target.value })}
         />
         {errors.price && (
           <p style={{ color: "red", fontSize: "14px" }}>{errors.price}</p>

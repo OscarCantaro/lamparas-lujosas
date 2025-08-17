@@ -37,10 +37,10 @@ const Grid = styled(motion.div)`
 
 const ShopTitle = styled.h1`
   font-family: "Playfair Display", serif;
-  font-size: 36px;
+  font-size: 30px;
   color: ${(props) => props.theme.colors.black};
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 20px;
 
   @media (max-width: 600px) {
     font-size: 28px;

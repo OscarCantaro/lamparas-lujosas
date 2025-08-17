@@ -1,10 +1,9 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import { motion } from "framer-motion"; // Nueva importación
+import { motion } from "framer-motion";
 
 const CardWrapper = styled(motion(Link))`
-  // Convertido a motion(Link)
   display: flex;
   flex-direction: column;
   align-items: center;

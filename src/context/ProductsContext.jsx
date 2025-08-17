@@ -1,32 +1,64 @@
 import React, { createContext, useState, useEffect } from "react";
-import { products as initialProducts } from "../data/products";
+import { db } from "../firebase";
+import {
+  collection,
+  getDocs,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+  onSnapshot,
+} from "firebase/firestore";
 
 export const ProductsContext = createContext();
 
 export const ProductsProvider = ({ children }) => {
-  const [products, setProducts] = useState(() => {
-    // Load from localStorage or use initialProducts
-    const saved = localStorage.getItem("products");
-    return saved ? JSON.parse(saved) : initialProducts;
-  });
+  const [products, setProducts] = useState([]);
 
-  // Persist to localStorage on products change
+  // Cargar productos en tiempo real
   useEffect(() => {
-    localStorage.setItem("products", JSON.stringify(products));
-  }, [products]);
+    const unsubscribe = onSnapshot(collection(db, "products"), (snapshot) => {
+      const productsData = snapshot.docs.map((doc) => ({
+        id: doc.id, // Firestore usa strings como IDs
+        ...doc.data(),
+      }));
+      setProducts(productsData);
+    });
 
-  const addProduct = (newProduct) => {
-    setProducts((prev) => [...prev, { ...newProduct, id: Date.now() }]); // Auto-generate unique ID
+    // Limpieza del listener
+    return () => unsubscribe();
+  }, []);
+
+  const addProduct = async (newProduct) => {
+    try {
+      await addDoc(collection(db, "products"), {
+        ...newProduct,
+        price: parseFloat(newProduct.price), // Asegura que price sea número
+      });
+    } catch (error) {
+      console.error("Error al agregar producto:", error);
+    }
   };
 
-  const updateProduct = (updatedProduct) => {
-    setProducts((prev) =>
-      prev.map((p) => (p.id === updatedProduct.id ? updatedProduct : p))
-    );
+  const updateProduct = async (updatedProduct) => {
+    try {
+      const productRef = doc(db, "products", updatedProduct.id);
+      await updateDoc(productRef, {
+        ...updatedProduct,
+        price: parseFloat(updatedProduct.price),
+      });
+    } catch (error) {
+      console.error("Error al actualizar producto:", error);
+    }
   };
 
-  const deleteProduct = (id) => {
-    setProducts((prev) => prev.filter((p) => p.id !== id));
+  const deleteProduct = async (id) => {
+    try {
+      const productRef = doc(db, "products", id);
+      await deleteDoc(productRef);
+    } catch (error) {
+      console.error("Error al eliminar producto:", error);
+    }
   };
 
   return (
