@@ -1,14 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
-import { products } from "../data/products";
-import { motion } from "framer-motion"; // Nueva importación
+import { motion } from "framer-motion";
+import { ProductsContext } from "../context/ProductsContext";
 
 const DetailWrapper = styled(motion.div)`
   padding: 60px 40px;
-  max-width: 900px; // Mayor para desktop
+  background-color: ${(props) => props.theme.colors.white};
+  max-width: 900px;
   margin: 0 auto;
-  ... @media (max-width: 1024px) {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid ${(props) => props.theme.colors.lightGray};
+
+  @media (max-width: 1024px) {
     padding: 40px 30px;
     max-width: 700px;
   }
@@ -20,7 +26,10 @@ const DetailWrapper = styled(motion.div)`
 `;
 
 const ProductImage = styled(motion.img)`
-  max-height: 500px; // Mayor en desktop
+  width: 100%;
+  max-height: 500px;
+  object-fit: cover;
+  margin-bottom: 20px;
 
   @media (max-width: 1024px) {
     max-height: 400px;
@@ -32,16 +41,18 @@ const ProductImage = styled(motion.img)`
 `;
 
 const ProductName = styled(motion.h1)`
-  // Convertido a motion.h1
   font-family: "Playfair Display", serif;
   font-size: 32px;
   color: ${(props) => props.theme.colors.black};
   margin: 0 0 10px;
   text-align: center;
+
+  @media (max-width: 600px) {
+    font-size: 24px;
+  }
 `;
 
 const ProductDescription = styled(motion.p)`
-  // Convertido a motion.p
   font-family: "Roboto", sans-serif;
   font-size: 16px;
   color: ${(props) => props.theme.colors.darkGray};
@@ -50,7 +61,6 @@ const ProductDescription = styled(motion.p)`
 `;
 
 const ProductPrice = styled(motion.p)`
-  // Convertido a motion.p
   font-family: "Roboto", sans-serif;
   font-size: 24px;
   color: ${(props) => props.theme.colors.mediumGray};
@@ -58,7 +68,6 @@ const ProductPrice = styled(motion.p)`
 `;
 
 const BuyButton = styled(motion.button)`
-  // Convertido a motion.button
   background-color: ${(props) => props.theme.colors.black};
   color: ${(props) => props.theme.colors.white};
   border: none;
@@ -89,6 +98,7 @@ const buttonVariants = {
 
 const ProductDetail = () => {
   const { id } = useParams();
+  const { products } = useContext(ProductsContext);
   const product = products.find((p) => p.id === parseInt(id));
 
   if (!product) {
@@ -119,13 +129,13 @@ const ProductDetail = () => {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        variants={imageVariants} // Slide-in izquierda
+        variants={imageVariants}
       />
       <ProductName
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true }}
-        variants={textVariants} // Slide-in derecha
+        variants={textVariants}
       >
         {product.name}
       </ProductName>
