@@ -44,9 +44,7 @@ const WhatsAppInfo = styled.p`
 const Footer = () => {
   return (
     <FooterWrapper>
-      <Copyright>
-        &copy; 2025 Lámparas Elite. Todos los derechos reservados.
-      </Copyright>
+      <Copyright>&copy; 2025 - Todos los derechos reservados</Copyright>
       <SocialLinks>
         <SocialIcon
           href="https://instagram.com"
@@ -70,8 +68,8 @@ const Footer = () => {
           <FaTwitter />
         </SocialIcon>
       </SocialLinks>
-      <WhatsAppInfo>Contacto vía WhatsApp: 924 680 502</WhatsAppInfo>{" "}
-      {/* Reemplaza con tu número real */}
+      <WhatsAppInfo>WhatsApp: 924 680 502</WhatsAppInfo>
+      {""}
     </FooterWrapper>
   );
 };

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { products } from "../data/products";
 import ProductCard from "../components/ProductCard";
-import { motion } from "framer-motion"; // Nueva importación
+import { motion } from "framer-motion";
 
 const Grid = styled(motion.div)`
   display: grid;

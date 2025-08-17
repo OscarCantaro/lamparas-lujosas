@@ -90,9 +90,9 @@ const Header = () => {
       <Logo to="/">Lámparas Elite</Logo>
       <NavMenu>
         <NavItem to="/" end>
-          Home
+          Inicio
         </NavItem>
-        <NavItem to="/shop">Shop</NavItem>
+        <NavItem to="/shop">Tienda</NavItem>
         <NavItem to="/contact">Contacto</NavItem>
       </NavMenu>
       <CartIcon /> {/* Sin funcionalidad por ahora */}
