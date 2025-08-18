@@ -1,7 +1,8 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
+import { getAuth } from "firebase/auth"; // Nueva importación para Auth
 
-// Tu configuración de Firebase 
+// Tu configuración de Firebase
 const firebaseConfig = {
   apiKey: "AIzaSyBtfG2WCoqNLEEeQO16YBp3cIEL7QslTig",
   authDomain: "luxurylamps-20e2b.firebaseapp.com",
@@ -14,3 +15,4 @@ const firebaseConfig = {
 // Inicializar Firebase
 const app = initializeApp(firebaseConfig);
 export const db = getFirestore(app);
+export const auth = getAuth(app); // Exporta auth para usar en el contexto

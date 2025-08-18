@@ -87,7 +87,7 @@ const CartIcon = styled(FaShoppingCart)`
 const Header = () => {
   return (
     <HeaderWrapper>
-      <Logo to="/">Lámparas Elite</Logo>
+      <Logo to="/">Lámparas</Logo>
       <NavMenu>
         <NavItem to="/" end>
           Inicio

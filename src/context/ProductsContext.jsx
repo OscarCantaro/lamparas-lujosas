@@ -1,8 +1,7 @@
 import React, { createContext, useState, useEffect } from "react";
-import { db } from "../firebase";
+import { db, auth } from "../firebase"; // Importa auth
 import {
   collection,
-  getDocs,
   addDoc,
   updateDoc,
   deleteDoc,
@@ -16,7 +15,6 @@ export const ProductsProvider = ({ children }) => {
   const [products, setProducts] = useState([]);
   const [error, setError] = useState(null);
 
-  // Cargar productos en tiempo real
   useEffect(() => {
     const unsubscribe = onSnapshot(
       collection(db, "products"),
@@ -42,8 +40,15 @@ export const ProductsProvider = ({ children }) => {
     return () => unsubscribe();
   }, []);
 
+  const checkAuth = () => {
+    if (!auth.currentUser) {
+      throw new Error("Usuario no autenticado");
+    }
+  };
+
   const addProduct = async (newProduct) => {
     try {
+      checkAuth();
       await addDoc(collection(db, "products"), {
         ...newProduct,
         price: parseFloat(newProduct.price),
@@ -57,6 +62,7 @@ export const ProductsProvider = ({ children }) => {
 
   const updateProduct = async (updatedProduct) => {
     try {
+      checkAuth();
       const productRef = doc(db, "products", updatedProduct.id);
       await updateDoc(productRef, {
         ...updatedProduct,
@@ -71,6 +77,7 @@ export const ProductsProvider = ({ children }) => {
 
   const deleteProduct = async (id) => {
     try {
+      checkAuth();
       const productRef = doc(db, "products", id);
       await deleteDoc(productRef);
       setError(null);

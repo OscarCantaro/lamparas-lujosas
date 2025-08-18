@@ -108,8 +108,8 @@ const ProductDetail = () => {
   const handleBuy = () => {
     const message = `Hola, quiero comprar ${
       product.name
-    } por $${product.price.toFixed(2)}`;
-    const whatsappNumber = "+123456789";
+    } por S/ ${product.price.toFixed(2)}`;
+    const whatsappNumber = "+51967861327";
     const url = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(
       message
     )}`;
@@ -156,7 +156,7 @@ const ProductDetail = () => {
         viewport={{ once: true }}
         variants={textVariants}
       >
-        ${product.price.toFixed(2)}
+        S/ {product.price.toFixed(2)}
       </ProductPrice>
 
       <BuyButton

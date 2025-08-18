@@ -1,4 +1,4 @@
-import React, { Suspense } from "react";
+import React, { Suspense, useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -6,15 +6,18 @@ import {
   Navigate,
 } from "react-router-dom";
 import styled from "styled-components";
+import { auth } from "./firebase"; // Nueva importación
+import { onAuthStateChanged } from "firebase/auth";
+import { ProductsProvider } from "./context/ProductsContext";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { ProductsProvider } from "./context/ProductsContext";
 
 const Home = React.lazy(() => import("./pages/Home"));
 const Shop = React.lazy(() => import("./pages/Shop"));
 const ProductDetail = React.lazy(() => import("./pages/ProductDetail"));
 const Contact = React.lazy(() => import("./pages/Contact"));
 const AdminPanel = React.lazy(() => import("./components/AdminPanel"));
+const Login = React.lazy(() => import("./components/Login")); // Nueva lazy load para Login
 
 const AppWrapper = styled.div`
   background-color: ${(props) => props.theme.colors.lightGray};
@@ -25,10 +28,20 @@ const AppWrapper = styled.div`
 `;
 
 function App() {
-  // Simple auth check for development
-  const isAdminAccessible =
-    process.env.NODE_ENV === "development" &&
-    new URLSearchParams(window.location.search).get("pass") === "admin123";
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+    return () => unsubscribe();
+  }, []);
+
+  if (loading) {
+    return <div>Cargando autenticación...</div>;
+  }
 
   return (
     <ProductsProvider>
@@ -44,10 +57,9 @@ function App() {
                 <Route path="/contact" element={<Contact />} />
                 <Route
                   path="/admin"
-                  element={
-                    isAdminAccessible ? <AdminPanel /> : <Navigate to="/" />
-                  }
+                  element={user ? <AdminPanel /> : <Navigate to="/login" />}
                 />
+                <Route path="/login" element={<Login />} />
               </Routes>
             </Suspense>
           </main>
