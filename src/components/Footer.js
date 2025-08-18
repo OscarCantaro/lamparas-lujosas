@@ -9,7 +9,7 @@ const FooterWrapper = styled.footer`
   text-align: center;
   font-family: "Roboto", sans-serif;
   font-size: 14px;
-
+  margin: 0;
   @media (max-width: 768px) {
     padding: 15px;
   }

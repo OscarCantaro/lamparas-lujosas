@@ -26,7 +26,7 @@ const HeaderWrapper = styled.header`
 
 const Logo = styled(NavLink)`
   font-family: "Playfair Display", serif;
-  font-size: 32px; // Mayor para lujo
+  font-size: 32px;
   font-weight: 700;
   color: ${(props) => props.theme.colors.white};
   text-decoration: none;
