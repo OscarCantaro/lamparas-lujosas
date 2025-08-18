@@ -20,10 +20,10 @@ const AdminWrapper = styled.div`
 
 const Title = styled.h1`
   font-family: "Playfair Display", serif;
-  font-size: 30px;
+  font-size: 36px;
   color: ${(props) => props.theme.colors.black};
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 40px;
 
   @media (max-width: 600px) {
     font-size: 28px;
@@ -39,7 +39,7 @@ const Form = styled.form`
 `;
 
 const Input = styled.input`
-  padding: 10px;
+  padding: 15px;
   border: 1px solid ${(props) => props.theme.colors.mediumGray};
   background-color: ${(props) => props.theme.colors.white};
   font-family: "Roboto", sans-serif;
@@ -52,7 +52,7 @@ const Input = styled.input`
 `;
 
 const TextArea = styled.textarea`
-  padding: 10px;
+  padding: 15px;
   border: 1px solid ${(props) => props.theme.colors.mediumGray};
   background-color: ${(props) => props.theme.colors.white};
   font-family: "Roboto", sans-serif;
@@ -63,7 +63,7 @@ const TextArea = styled.textarea`
 `;
 
 const Select = styled.select`
-  padding: 10px;
+  padding: 15px;
   border: 1px solid ${(props) => props.theme.colors.mediumGray};
   background-color: ${(props) => props.theme.colors.white};
   font-family: "Roboto", sans-serif;
@@ -138,6 +138,22 @@ const ModalContent = styled(motion.div)`
   border: 1px solid ${(props) => props.theme.colors.lightGray};
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
+const SuccessMessage = styled.p`
+  color: green;
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  text-align: center;
+  margin-bottom: 20px;
+`;
+
 const modalVariants = {
   hidden: { opacity: 0, y: -50 },
   visible: { opacity: 1, y: 0, transition: { duration: 0.3, ease: "easeOut" } },
@@ -149,7 +165,7 @@ const buttonVariants = {
 };
 
 const AdminPanel = () => {
-  const { products, addProduct, updateProduct, deleteProduct } =
+  const { products, addProduct, updateProduct, deleteProduct, error } =
     useContext(ProductsContext);
   const [formData, setFormData] = useState({
     name: "",
@@ -160,7 +176,8 @@ const AdminPanel = () => {
   });
   const [editingProduct, setEditingProduct] = useState(null);
   const [showDeleteModal, setShowDeleteModal] = useState(null);
-  const [errors, setErrors] = useState({});
+  const [formErrors, setFormErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState("");
 
   const validateForm = () => {
     const newErrors = {};
@@ -177,7 +194,7 @@ const AdminPanel = () => {
       newErrors.image = "URL de imagen válida requerida (jpg, png, gif)";
     }
     if (!formData.category) newErrors.category = "La categoría es requerida";
-    setErrors(newErrors);
+    setFormErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
@@ -185,30 +202,43 @@ const AdminPanel = () => {
     e.preventDefault();
     if (!validateForm()) return;
 
-    if (editingProduct) {
-      await updateProduct({ ...formData, id: editingProduct.id });
-      setEditingProduct(null);
-    } else {
-      await addProduct(formData);
+    setSuccessMessage("");
+    try {
+      if (editingProduct) {
+        await updateProduct({ ...formData, id: editingProduct.id });
+        setSuccessMessage("Producto actualizado con éxito");
+        setEditingProduct(null);
+      } else {
+        await addProduct(formData);
+        setSuccessMessage("Producto agregado con éxito");
+      }
+      setFormData({
+        name: "",
+        description: "",
+        price: "",
+        image: "",
+        category: "",
+      });
+      setFormErrors({});
+    } catch (err) {
+      console.error("Error en submit:", err);
     }
-    setFormData({
-      name: "",
-      description: "",
-      price: "",
-      image: "",
-      category: "",
-    });
-    setErrors({});
   };
 
   const handleEdit = (product) => {
     setEditingProduct(product);
     setFormData(product);
+    setSuccessMessage("");
   };
 
   const handleDeleteConfirm = async () => {
-    await deleteProduct(showDeleteModal);
-    setShowDeleteModal(null);
+    try {
+      await deleteProduct(showDeleteModal);
+      setSuccessMessage("Producto eliminado con éxito");
+      setShowDeleteModal(null);
+    } catch (err) {
+      console.error("Error al confirmar eliminación:", err);
+    }
   };
 
   const categories = ["Mesa", "Piso", "Colgante", "Pared"];
@@ -216,6 +246,8 @@ const AdminPanel = () => {
   return (
     <AdminWrapper>
       <Title>{editingProduct ? "Editar Producto" : "Agregar Producto"}</Title>
+      {error && <ErrorMessage>{error}</ErrorMessage>}
+      {successMessage && <SuccessMessage>{successMessage}</SuccessMessage>}
       <Form onSubmit={handleSubmit}>
         <Input
           type="text"
@@ -223,8 +255,8 @@ const AdminPanel = () => {
           value={formData.name}
           onChange={(e) => setFormData({ ...formData, name: e.target.value })}
         />
-        {errors.name && (
-          <p style={{ color: "red", fontSize: "14px" }}>{errors.name}</p>
+        {formErrors.name && (
+          <p style={{ color: "red", fontSize: "14px" }}>{formErrors.name}</p>
         )}
         <TextArea
           placeholder="Descripción"
@@ -233,8 +265,10 @@ const AdminPanel = () => {
             setFormData({ ...formData, description: e.target.value })
           }
         />
-        {errors.description && (
-          <p style={{ color: "red", fontSize: "14px" }}>{errors.description}</p>
+        {formErrors.description && (
+          <p style={{ color: "red", fontSize: "14px" }}>
+            {formErrors.description}
+          </p>
         )}
         <Input
           type="number"
@@ -242,8 +276,8 @@ const AdminPanel = () => {
           value={formData.price}
           onChange={(e) => setFormData({ ...formData, price: e.target.value })}
         />
-        {errors.price && (
-          <p style={{ color: "red", fontSize: "14px" }}>{errors.price}</p>
+        {formErrors.price && (
+          <p style={{ color: "red", fontSize: "14px" }}>{formErrors.price}</p>
         )}
         <Input
           type="text"
@@ -251,8 +285,8 @@ const AdminPanel = () => {
           value={formData.image}
           onChange={(e) => setFormData({ ...formData, image: e.target.value })}
         />
-        {errors.image && (
-          <p style={{ color: "red", fontSize: "14px" }}>{errors.image}</p>
+        {formErrors.image && (
+          <p style={{ color: "red", fontSize: "14px" }}>{formErrors.image}</p>
         )}
         <Select
           value={formData.category}
@@ -267,8 +301,10 @@ const AdminPanel = () => {
             </option>
           ))}
         </Select>
-        {errors.category && (
-          <p style={{ color: "red", fontSize: "14px" }}>{errors.category}</p>
+        {formErrors.category && (
+          <p style={{ color: "red", fontSize: "14px" }}>
+            {formErrors.category}
+          </p>
         )}
         <SubmitButton
           type="submit"
