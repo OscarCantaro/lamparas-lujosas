@@ -337,7 +337,7 @@ const AdminPanel = () => {
         {products.map((product) => (
           <ProductItem key={product.id}>
             <ProductInfo>
-              {product.name} - ${product.price.toFixed(2)}
+              {product.name} - S/ {product.price.toFixed(2)}
             </ProductInfo>
             <ButtonGroup>
               <ActionButton

@@ -1,6 +1,4 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
+# dependencias
 /node_modules
 /.pnp
 .pnp.js
@@ -8,16 +6,25 @@
 # testing
 /coverage
 
-# production
+# Archivos de editor
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Archivos de compilación
 /build
 
-# misc
+# Archivos de entorno
+.env
 .DS_Store
 .env.local
 .env.development.local
 .env.test.local
 .env.production.local
 
+# Otros archivos generados
+*.log
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

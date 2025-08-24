@@ -6,7 +6,7 @@ import { FaShoppingCart } from "react-icons/fa"; // Icono de carrito
 const HeaderWrapper = styled.header`
   background-color: ${(props) => props.theme.colors.black};
   color: ${(props) => props.theme.colors.white};
-  padding: 20px 40px; // Más espacio en desktop
+  padding: 20px 40px; // Más espacio en PC
   display: flex;
   justify-content: space-between;
   align-items: center;
